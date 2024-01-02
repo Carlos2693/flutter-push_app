@@ -13,6 +13,8 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
   NotificationBloc() : super(const NotificationState()) {
     on<NotificationStatusChanged>(_notificationStatusChanged);
+
+    _initialStatusCheck();
   }
 
   static Future<void> initializeFCM() async {
@@ -27,6 +29,19 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         status: event.status
       )
     );
+    _getFCMToken();
+  }
+
+  void _initialStatusCheck() async {
+    final settings = await messaging.getNotificationSettings();
+    add(NotificationStatusChanged(settings.authorizationStatus));
+  }
+
+  void _getFCMToken() async {
+    if (state.status != AuthorizationStatus.authorized) return;
+
+    final token = await messaging.getToken();
+    print(token);
   }
 
   void requestPermission() async {
