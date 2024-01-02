@@ -8,6 +8,11 @@ import 'package:push_app/firebase_options.dart';
 part 'notification_event.dart';
 part 'notification_state.dart';
 
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("Handling a background message: ${message.messageId}");
+}
+
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
