@@ -19,6 +19,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  int pushNumberId = 0;
 
   NotificationBloc() : super(const NotificationState()) {
     on<NotificationStatusChanged>(_notificationStatusChanged);
@@ -82,6 +83,12 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         : message.notification!.apple?.imageUrl,
     );
 
+    LocalNotifications.showLocalNotification(
+      id: ++pushNumberId,
+      body: notification.body,
+      data: '${notification.data}',
+      title: notification.title,
+    );
     add(NotificationReceived(notification));
   }
 
