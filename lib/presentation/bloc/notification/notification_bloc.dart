@@ -97,7 +97,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       showLocalNotification!(
         id: ++pushNumberId,
         body: notification.body,
-        data: '${notification.data}',
+        data: notification.messageId,
         title: notification.title,
       );
     }
